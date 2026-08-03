@@ -1,6 +1,6 @@
 # StoreStack Attribute Fees for WooCommerce
 
-Add fees to WooCommerce variable products based on user-selected attributes and options.
+Add fees to product attributes and change final product price based on user-selected attributes and options.
 
 **Contributors:** [tiagosartor3](https://profiles.wordpress.org/tiagosartor3), [storestack](https://profiles.wordpress.org/storestack)  
 **Tags:** `woocommerce`, `product attributes`, `extra fees`, `variable products`, `pricing`  

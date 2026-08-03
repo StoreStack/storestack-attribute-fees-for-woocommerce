@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Add fees to WooCommerce variable products based on user-selected attributes and options.
+Add fees to product attributes and change final product price based on user-selected attributes and options.
 
 == Description ==
 
