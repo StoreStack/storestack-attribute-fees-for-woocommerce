@@ -4,7 +4,7 @@ Tags: woocommerce, product attributes, extra fees, variable products, pricing
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -74,6 +74,9 @@ Yes! The plugin fully declares compatibility with WooCommerce Custom Order Table
 When deleting the plugin from WordPress Admin, it performs a clean uninstall, which deletes any custom database table, plugin options, and cache.
 
 == Changelog ==
+
+= 1.0.1 - 2026/08/03 =
+* Updated README.
 
 = 1.0.0 - 2026/08/02 =
 * Initial release.
