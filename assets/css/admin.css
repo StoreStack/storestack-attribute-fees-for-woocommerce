@@ -1,0 +1,17 @@
+.ssaffw-fees-table {
+    padding: 0 !important;
+    border-color: #404040 !important;
+    border-radius: 4px !important;
+    overflow: clip !important;
+}
+
+.ssaffw-fees-table th {
+    font-weight: 600 !important;
+}
+
+.ssaffw-fees-table th,
+.ssaffw-fees-table td {
+    padding: 8px 10px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+}

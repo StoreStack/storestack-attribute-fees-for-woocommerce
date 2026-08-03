@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="a" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#311059"/>
+      <stop offset="100%" stop-color="#120424"/>
+    </linearGradient>
+    <linearGradient id="c" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#0072ff"/>
+    </linearGradient>
+    <linearGradient id="e" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff0844"/>
+      <stop offset="100%" stop-color="#ffb199"/>
+    </linearGradient>
+    <linearGradient id="f" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffe875"/>
+      <stop offset="50%" stop-color="#ffb300"/>
+      <stop offset="100%" stop-color="#e65c00"/>
+    </linearGradient>
+    <filter id="d" width="160%" height="160%" x="-30%" y="-30%">
+      <feDropShadow dx="0" dy="20" flood-color="#000" flood-opacity=".65" stdDeviation="24"/>
+    </filter>
+    <filter id="g">
+      <feDropShadow dx="0" dy="6" flood-color="#a34700" flood-opacity=".8" stdDeviation="6"/>
+    </filter>
+    <radialGradient id="b" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b3dff" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#8b3dff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#a)" stroke="#4a1e82" stroke-width="6" rx="112"/>
+  <circle cx="256" cy="256" r="220" fill="url(#b)"/>
+  <g transform="rotate(-22 741.292 -242.98)">
+    <rect width="180" height="260" x="-90" y="-130" fill="url(#c)" stroke="#fff" stroke-opacity=".4" stroke-width="2" filter="url(#d)" rx="36"/>
+    <circle cy="-30" r="40" fill="#fff" opacity=".25"/>
+    <rect width="80" height="12" x="-40" y="45" fill="#fff" opacity=".4" rx="6"/>
+    <rect width="50" height="12" x="-40" y="70" fill="#fff" opacity=".3" rx="6"/>
+  </g>
+  <g transform="rotate(22 -485.292 1074.026)">
+    <rect width="180" height="260" x="-90" y="-130" fill="url(#e)" stroke="#fff" stroke-opacity=".4" stroke-width="2" filter="url(#d)" rx="36"/>
+    <rect width="70" height="70" x="-35" y="-65" fill="#fff" opacity=".25" rx="16"/>
+    <rect width="80" height="12" x="-40" y="45" fill="#fff" opacity=".4" rx="6"/>
+    <rect width="50" height="12" x="-40" y="70" fill="#fff" opacity=".3" rx="6"/>
+  </g>
+  <g transform="translate(256 240)">
+    <rect width="210" height="290" x="-105" y="-145" fill="url(#f)" stroke="#fff" stroke-opacity=".7" stroke-width="3" filter="url(#d)" rx="40"/>
+    <path stroke="#fff" stroke-dasharray="12 12" stroke-linecap="round" stroke-width="5" d="M-75-85H75" opacity=".5"/>
+    <path stroke="#fff" stroke-linecap="round" stroke-width="24" d="M-40-10h80M0-50v80" filter="url(#g)"/>
+    <rect width="100" height="16" x="-50" y="75" fill="#fff" opacity=".95" rx="8"/>
+    <rect width="60" height="12" x="-30" y="105" fill="#fff" opacity=".7" rx="6"/>
+  </g>
+  <path fill="#fff" d="M0 0h512v150C300 200 100 50 0 250Z" opacity=".04" pointer-events="none"/>
+</svg>

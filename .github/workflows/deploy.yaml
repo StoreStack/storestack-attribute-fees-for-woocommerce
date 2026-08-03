@@ -1,0 +1,76 @@
+name: Deploy to WordPress SVN Repository
+
+on:
+    push:
+        tags:
+            - "*.*.*"
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            PLUGIN_SLUG: "storestack-attribute-fees-for-woocommerce"
+            SVN_USERNAME: ${{ secrets.WP_SVN_USERNAME }}
+            SVN_PASSWORD: ${{ secrets.WP_SVN_PASSWORD }}
+
+        steps:
+            - name: Checkout GitHub Repository
+              uses: actions/checkout@v7
+
+            - name: Install Subversion & Rsync
+              run: sudo apt-get update && sudo apt-get install -y subversion rsync
+
+            - name: Checkout WordPress SVN Repository
+              run: |
+                  # Check out the repository structure without downloading all historical tags
+                  svn checkout --depth empty https://plugins.svn.wordpress.org/${PLUGIN_SLUG} svn-repo
+                  cd svn-repo
+                  svn update --set-depth infinity trunk
+                  svn update --set-depth infinity tags
+                  svn update --set-depth infinity assets
+
+            - name: Sync GitHub Repo to SVN Trunk
+              run: |
+                  # Rsync replaces trunk contents with the GitHub repo contents.
+                  # '--delete' removes files in SVN that no longer exist in the GitHub repo.
+                  rsync -r --delete \
+                    --exclude='svn-repo/' \
+                    --exclude-from='.distignore' \
+                    ./ ./svn-repo/trunk/
+
+                  cd svn-repo/trunk
+
+                  # Stage all new files for SVN
+                  svn add --force .
+
+                  # Find and stage all deleted files for SVN removal
+                  svn status | grep '^\!' | awk '{print $2}' | xargs -r svn remove
+
+            - name: Sync Assets to SVN Assets
+              run: |
+                  # Rsync contents to the SVN assets directory
+                  rsync -r --delete ./.wordpress-org/ ./svn-repo/assets/
+
+                  cd svn-repo/assets
+
+                  # Stage all new files for SVN
+                  svn add --force .
+
+                  # Find and stage all deleted files for SVN removal
+                  svn status | grep '^\!' | awk '{print $2}' | xargs -r svn remove
+
+            - name: Create SVN Tag
+              run: |
+                  cd svn-repo
+                  # GITHUB_REF_NAME contains the tag being pushed (e.g., 1.2.3)
+                  # This duplicates trunk into the new tag folder
+                  svn copy trunk tags/${GITHUB_REF_NAME}
+
+            - name: Commit to WordPress SVN Repository
+              run: |
+                  cd svn-repo
+                  svn commit -m "Release version ${GITHUB_REF_NAME}" \
+                    --no-auth-cache \
+                    --non-interactive \
+                    --username "${SVN_USERNAME}" \
+                    --password "${SVN_PASSWORD}"
