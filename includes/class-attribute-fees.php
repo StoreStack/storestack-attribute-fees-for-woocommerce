@@ -376,16 +376,16 @@ class AttributeFees
                     $price += $fee_value;
                 } elseif ($fee_type === FeeType::PERCENTAGE->value) {
                     $price += $base_price * ($fee_value / 100);
-                } elseif ($fee_type === FeeType::PERCENTAGE_COMPOUNDED->value) {
+                } elseif ($fee_type === FeeType::COMPOUND_PERCENTAGE->value) {
                     $price += $price * ($fee_value / 100);
                 }
             }
 
-            $price = $price > 0 ? $price : 0; // Prevent negative price
-            $cart_item['data']->set_price($price);
+            $final_price = $price > 0 ? $price : 0; // Prevent negative price
+            $cart_item['data']->set_price($final_price);
 
             // Set ['ssaffw_price_with_fees'] so it can be accessed later on
-            $cart->cart_contents[$cart_item_key]['ssaffw_price_with_fees'] = $price;
+            $cart->cart_contents[$cart_item_key]['ssaffw_price_with_fees'] = $final_price;
         }
     }
 

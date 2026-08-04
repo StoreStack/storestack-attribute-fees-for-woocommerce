@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 1: // Percentage
                         price += basePrice * (feeValue / 100);
                         break;
-                    case 2: // Percentage Compounded
+                    case 2: // Compound Percentage
                         price += price * (feeValue / 100);
                         break;
                 }
 
-                price = price > 0 ? price : 0; // Prevent negative price
+                const finalPrice = price > 0 ? price : 0; // Prevent negative price
 
-                const formattedPrice = accounting.formatMoney(price, {
+                const formattedPrice = accounting.formatMoney(finalPrice, {
                     symbol: '',
                     decimal: currency_params.decimal_separator,
                     thousand: currency_params.thousand_separator,

@@ -17,8 +17,8 @@ StoreStack Attribute Fees for WooCommerce allows WooCommerce store owners to eas
 Whether you charge extra for custom materials, special colors, premium finishes, or specific dimensions, this plugin gives you complete control over attribute pricing directly within the product edit screen.
 
 ### Features
-* **Flexible Fee Types**: Support for Flat fees, Percentage fees, and Percentage Compounded fees per attribute option.
-* **Native WooCommerce Integration**: Dynamic fee calculations updated live in product variation dropdowns, cart, mini-cart, and checkout.
+* **Flexible Fee Types**: Support for flat fees, percentage fees, and compound percentage fees for each attribute option.
+* **Native WooCommerce Integration**: Dynamic fee calculations update in real-time on variable product pages, cart, mini-cart, and checkout.
 * **Built-in Translations**: Includes full support for English (`en_US`) and Brazilian Portuguese (`pt_BR`).
 
 == Need Help or Have Feedback? ==
@@ -27,18 +27,18 @@ Before leaving a negative review, please consider reaching out to us first! If y
 
 == Contributing & GitHub Repository ==
 
-We welcome and appreciate contributions from the community! Whether you want to fix a bug, improve documentation, or propose a new feature, feel free to fork our repository, submit pull requests, or open issues on GitHub:
+We appreciate contributions from the community! Whether you want to fix a bug, improve documentation, or propose a new feature, feel free to fork our repository, submit pull requests, or open issues on GitHub:
 
 [GitHub Repository](https://github.com/StoreStack/storestack-attribute-fees-for-woocommerce)
 
-Your feedback and code contributions help make this plugin better for everyone!
+Your feedback and code contributions help make this plugin better for everyone.
 
 == Installation ==
 
 ### Getting Started 
 
 1. **Install and Activate**:
-   - Download the .zip from WordPress.org and install via **WordPress Admin > Plugins > Add New > Upload Plugin**.
+   - Download the `.zip` file from WordPress.org and install via **WordPress Admin > Plugins > Add New > Upload Plugin**.
    - Click **Activate** to enable the plugin.
 
 2. **Configure Attributes on a Variable Product**:
@@ -51,7 +51,7 @@ Your feedback and code contributions help make this plugin better for everyone!
    - For each attribute option, enter a fee value and select the appropriate **Fee Type**:
      * **Flat**: Adds a fixed dollar/currency amount (e.g. `+$10.00`).
      * **Percentage**: Adds a percentage fee calculated from the base variation price (e.g. `+15%`).
-     * **Percentage Compounded**: Calculates the percentage fee based on the running price including prior fees.
+     * **Compound Percentage**: Calculates the percentage fee based on the running price including prior fees.
    - *(Tip: Use the **Change All** dropdown and button to update all fee types in an attribute block at once!)*
 
 4. **Save and Test on Frontend**:
@@ -62,7 +62,7 @@ Your feedback and code contributions help make this plugin better for everyone!
 == Frequently Asked Questions ==
 
 = What fee types are supported? =
-The plugin supports Flat fees ($), Percentage fees (%), and Percentage Compounded fees.
+The plugin supports flat fees ($), percentage fees (%), and compound percentage fees.
 
 = I've set the fees for the product but I can't see the changes =
 After setting or updating the fees, it may be needed to delete the server-level cache in order for the changes to be reflected on the frontend.
@@ -76,7 +76,7 @@ When deleting the plugin from WordPress Admin, it performs a clean uninstall, wh
 == Changelog ==
 
 = 1.0.1 - 2026/08/03 =
-* Updated README.
+* Update README.
 
 = 1.0.0 - 2026/08/02 =
 * Initial release.
