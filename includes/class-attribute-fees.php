@@ -183,11 +183,11 @@ class AttributeFees
         $fees = [];
         foreach ($results as $row) {
             $attribute_name = wc_attribute_taxonomy_name_by_id(intval($row->attribute_id));
-            $term_slug = get_term(intval($row->term_id))->slug;
+            $term = get_term(intval($row->term_id));
             $fee_type = intval($row->fee_type);
 
-            $fees[$attribute_name][$term_slug]['fee'] = $row->fee;
-            $fees[$attribute_name][$term_slug]['fee_type'] = $fee_type;
+            $fees[$attribute_name][$term->slug]['fee'] = $row->fee;
+            $fees[$attribute_name][$term->slug]['fee_type'] = $fee_type;
         }
 
         wp_cache_set("attribute_fees_{$product_id}", $fees, '', 0);
@@ -260,8 +260,12 @@ class AttributeFees
      * Modifies the variation option name to include the formatted fee for display.
      * Hooked to 'woocommerce_variation_option_name' filter.
      */
-    public function variation_option_name(string $term_name, object $term, string $attribute_name, object $product): string
+    public function variation_option_name(string $term_name, mixed $term, string $attribute_name, \WC_Product $product): string
     {
+        if (!$term || !$term instanceof \WP_Term) {
+            return $term_name;
+        }
+
         $product_id = $product->is_type('variation') ? $product->get_parent_id() : $product->get_id();
         $fees = $this->get_all_fees($product_id);
 
@@ -325,6 +329,8 @@ class AttributeFees
         foreach ($item_data as $key => $option) {
             $attribute_name = wc_attribute_taxonomy_name($option['key']);
             $term = get_term_by('name', $option['value'], $attribute_name);
+            if (!$term) continue;
+
             $term_name = $term->name;
 
             $item_data[$key]['value'] = apply_filters('woocommerce_variation_option_name', $term_name, $term, $attribute_name, $product); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
