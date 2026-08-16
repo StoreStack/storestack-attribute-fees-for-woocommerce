@@ -7,7 +7,7 @@ Add fees to product attributes and change final product price based on user-sele
 **Requires at least:** 6.2  
 **Tested up to:** 7.0  
 **Requires PHP:** 8.1  
-**Stable tag:** 1.0.1  
+**Stable tag:** 1.0.2  
 **License:** [GPLv3 or later](https://www.gnu.org/licenses/gpl-3.0.html)  
 
 ---
@@ -22,6 +22,13 @@ Whether you charge extra for custom materials, special colors, premium finishes,
 * **Flexible Fee Types**: Support for flat fees, percentage fees, and compound percentage fees for each attribute option.
 * **Native WooCommerce Integration**: Dynamic fee calculations update in real-time on variable product pages, cart, mini-cart, and checkout.
 * **Built-in Translations**: Includes full support for English (`en_US`) and Brazilian Portuguese (`pt_BR`).
+
+### Integrations
+
+Works seamlessly with the following plugins:
+
+* **[WooCommerce](https://wordpress.org/plugins/woocommerce)**
+* **[StoreStack Attribute Swatches for WooCommerce](https://wordpress.org/plugins/storestack-attribute-swatches-for-woocommerce)**
 
 ---
 
@@ -57,15 +64,15 @@ Your feedback and code contributions help make this plugin better for everyone!
 3. **Set Attribute Fees**:
    - Click the new **Attribute Fees** tab in the *Product Data* panel.
    - For each attribute option, enter a fee value and select the appropriate **Fee Type**:
-     * **Flat**: Adds a fixed dollar/currency amount (e.g. `+$10.00`).
+     * **Flat**: Adds a fixed currency amount (e.g. `+$10.00`).
      * **Percentage**: Adds a percentage fee calculated from the base variation price (e.g. `+15%`).
      * **Compound Percentage**: Calculates the percentage fee based on the running price including prior fees.
-   - *(Tip: Use the **Change All** dropdown and button to update all fee types in an attribute block at once!)*
+   - *Tip: Use the **Change All** dropdown and button to update all fee types in an attribute block at once.*
 
 4. **Save and Test on Frontend**:
    - Click **Update** to save your product.
-   - Visit the product page on your store. When customers select variation options, the fees will be shown automatically in dropdown labels, the product price, cart items, mini-cart, and checkout.
-   - In some hosting providers, it may be needed to delete the server-level cache in order for the changes to be reflected on the frontend.
+   - Visit the product page on your store. When customers select variation options, the fees will be displayed next to the option labels and prices will update live for the product, cart items, mini-cart, and checkout.
+   - *In some hosting providers, it may be needed to delete the server-level cache in order for the changes to be reflected on the frontend.*
 
 ---
 
@@ -86,6 +93,12 @@ When deleting the plugin from WordPress Admin, it performs a clean uninstall, wh
 ---
 
 ## Changelog
+
+### 1.0.2 - 2026/08/16
+* Refactor attribute fee handling.
+* Improve code consistency for price calculation.
+* Fix fee type terminology.
+* Update README.
 
 ### 1.0.1 - 2026/08/03
 * Update README.

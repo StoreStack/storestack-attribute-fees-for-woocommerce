@@ -4,7 +4,7 @@ Tags: woocommerce, product attributes, extra fees, variable products, pricing
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,13 +21,20 @@ Whether you charge extra for custom materials, special colors, premium finishes,
 * **Native WooCommerce Integration**: Dynamic fee calculations update in real-time on variable product pages, cart, mini-cart, and checkout.
 * **Built-in Translations**: Includes full support for English (`en_US`) and Brazilian Portuguese (`pt_BR`).
 
+### Integrations
+
+Works seamlessly with the following plugins:
+
+* **[WooCommerce](https://wordpress.org/plugins/woocommerce)**
+* **[StoreStack Attribute Swatches for WooCommerce](https://wordpress.org/plugins/storestack-attribute-swatches-for-woocommerce)**
+
 == Need Help or Have Feedback? ==
 
-Before leaving a negative review, please consider reaching out to us first! If you encounter any bugs, unexpected behavior, or have ideas for new features and improvements, please open a support request or report an issue. We will gladly work with you to resolve any problems.
+Before leaving a negative review, please consider reaching out to us first! If you encounter any bugs, unexpected behavior, or have ideas for new features and improvements, please open a support request or report an issue on our GitHub repository. We will gladly work with you to resolve any problems.
 
 == Contributing & GitHub Repository ==
 
-We appreciate contributions from the community! Whether you want to fix a bug, improve documentation, or propose a new feature, feel free to fork our repository, submit pull requests, or open issues on GitHub:
+We welcome and appreciate contributions from the community! Whether you want to fix a bug, improve documentation, or propose a new feature, feel free to fork our repository, submit pull requests, or open issues on GitHub:
 
 [GitHub Repository](https://github.com/StoreStack/storestack-attribute-fees-for-woocommerce)
 
@@ -49,15 +56,15 @@ Your feedback and code contributions help make this plugin better for everyone.
 3. **Set Attribute Fees**:
    - Click the new **Attribute Fees** tab in the *Product Data* panel.
    - For each attribute option, enter a fee value and select the appropriate **Fee Type**:
-     * **Flat**: Adds a fixed dollar/currency amount (e.g. `+$10.00`).
+     * **Flat**: Adds a fixed currency amount (e.g. `+$10.00`).
      * **Percentage**: Adds a percentage fee calculated from the base variation price (e.g. `+15%`).
      * **Compound Percentage**: Calculates the percentage fee based on the running price including prior fees.
-   - *(Tip: Use the **Change All** dropdown and button to update all fee types in an attribute block at once!)*
+   - *Tip: Use the **Change All** dropdown and button to update all fee types in an attribute block at once.*
 
 4. **Save and Test on Frontend**:
    - Click **Update** to save your product.
-   - Visit the product page on your store. When customers select variation options, the fees will be shown automatically in dropdown labels, the product price, cart items, mini-cart, and checkout.
-   - In some hosting providers, it may be needed to delete the server-level cache in order for the changes to be reflected on the frontend.
+   - Visit the product page on your store. When customers select variation options, the fees will be displayed next to the option labels and prices will update live for the product, cart items, mini-cart, and checkout.
+   - *On some hosting providers, it may be needed to delete the server-level cache in order for the changes to be reflected on the frontend.*
 
 == Frequently Asked Questions ==
 
@@ -68,12 +75,24 @@ The plugin supports flat fees ($), percentage fees (%), and compound percentage 
 After setting or updating the fees, it may be needed to delete the server-level cache in order for the changes to be reflected on the frontend.
 
 = Does this plugin support WooCommerce High-Performance Order Storage (HPOS)? =
-Yes! The plugin fully declares compatibility with WooCommerce Custom Order Tables / HPOS.
+Yes! The plugin declares full compatibility with WooCommerce HPOS (Custom Order Tables).
 
 = What happens to my data when I uninstall the plugin? =
 When deleting the plugin from WordPress Admin, it performs a clean uninstall, which deletes any custom database table, plugin options, and cache.
 
+== Screenshots ==
+
+1. Assign attributes to an existing variable product.
+2. Set fees for each attribute option.
+3. Frontend demo with the Storefront theme.
+
 == Changelog ==
+
+= 1.0.2 - 2026/08/16 =
+* Refactor attribute fee handling.
+* Improve code consistency for price calculation.
+* Fix fee type terminology.
+* Update README.
 
 = 1.0.1 - 2026/08/03 =
 * Update README.
