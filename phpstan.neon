@@ -2,7 +2,7 @@ parameters:
   level: 8
   paths:
     - includes/
-    - wc-attribute-swatches.php # Main plugin file
+    - wc-attribute-fees.php # Main plugin file
   bootstrapFiles:
     - phpstan-bootstrap.php
   scanFiles:
