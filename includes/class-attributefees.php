@@ -147,7 +147,7 @@ class AttributeFees {
 													<input
 														id="<?php echo esc_attr( "attribute_fees[{$attribute_name}][{$term->slug}][fee]" ); ?>"
 														name="<?php echo esc_attr( "attribute_fees[{$attribute_name}][{$term->slug}][fee]" ); ?>"
-														value="<?php echo esc_attr( $fees[ $attribute_name ][ $term->slug ]['fee'] ?? '' ); ?>"
+														value="<?php echo esc_attr( (string) ( $fees[ $attribute_name ][ $term->slug ]['fee'] ?? '' ) ); ?>"
 														class="short wc_input_price"
 														type="number"
 														step="0.01">
@@ -203,7 +203,7 @@ class AttributeFees {
 	 * Get all fees for a product.
 	 *
 	 * @param int $product_id Product ID.
-	 * @return array<string, array<string, array{fee: mixed, fee_type: int}>>
+	 * @return array<string, array<string, array{fee: int|float, fee_type: int}>>
 	 */
 	private function get_all_fees( int $product_id ): array {
 		$cache = wp_cache_get( "attribute_fees_{$product_id}" );
@@ -213,7 +213,7 @@ class AttributeFees {
 
 		global $wpdb;
 
-		$query = $wpdb->prepare(
+		$query   = $wpdb->prepare(
 			'SELECT * FROM %i WHERE product_id = %d',
 			$wpdb->prefix . Migrations::$table_name,
 			$product_id
@@ -223,7 +223,7 @@ class AttributeFees {
 		$fees = array();
 		foreach ( $results as $row ) {
 			$attribute_name = wc_attribute_taxonomy_name_by_id( intval( $row->attribute_id ) );
-			$term = get_term( intval( $row->term_id ) );
+			$term           = get_term( intval( $row->term_id ) );
 			if ( ! $term || is_wp_error( $term ) ) {
 				continue;
 			}
@@ -252,8 +252,8 @@ class AttributeFees {
 	/**
 	 * Save fees to database.
 	 *
-	 * @param int   $product_id     Product ID.
-	 * @param array<string, array<string, array{fee: int|float, fee_type: int} $attribute_fees Attribute fees data.
+	 * @param int                                                                $product_id     Product ID.
+	 * @param array<string, array<string, array{fee: int|float, fee_type: int}>> $attribute_fees Attribute fees data.
 	 * @return void
 	 */
 	private function save_fees( int $product_id, array $attribute_fees ): void {
@@ -358,7 +358,7 @@ class AttributeFees {
 			return;
 		}
 
-		$html = '<div id="storestack-attribute-fees-for-woocommerce" data-fees="' . esc_js( wp_json_encode( $fees ) ) . '"></div>';
+		$html = '<div id="storestack-attribute-fees-for-woocommerce" data-fees="' . esc_js( (string) wp_json_encode( $fees ) ) . '"></div>';
 
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
@@ -384,9 +384,9 @@ class AttributeFees {
 	/**
 	 * Add fees to cart and checkout.
 	 *
-	 * @param array $item_data Item data.
-	 * @param array $cart_item Cart item data.
-	 * @return array
+	 * @param array{key: string, value: mixed} $item_data Item data.
+	 * @param array<string, mixed>             $cart_item Cart item data.
+	 * @return array{key: string, value: mixed}
 	 */
 	public function add_fees_to_cart_item( array $item_data, array $cart_item ): array {
 		$product = wc_get_product( $cart_item['product_id'] );
@@ -412,10 +412,10 @@ class AttributeFees {
 	 * according to the selected attribute options and updates the item price to include
 	 * the calculated fees.
 	 *
-	 * @param object $cart Cart instance.
+	 * @param \WC_Cart $cart Cart instance.
 	 * @return void
 	 */
-	public function before_calculate_totals( object $cart ): void {
+	public function before_calculate_totals( \WC_Cart $cart ): void {
 		if ( did_action( 'woocommerce_before_calculate_totals' ) > 1 ) {
 			return;
 		}
@@ -466,11 +466,11 @@ class AttributeFees {
 	/**
 	 * Format a fee value for display with appropriate prefix and suffix.
 	 *
-	 * @param int|string $fee_value Fee value.
-	 * @param int        $fee_type  Fee type.
+	 * @param int|float $fee_value Fee value.
+	 * @param int       $fee_type  Fee type.
 	 * @return string
 	 */
-	private function get_formatted_fee_for_display( int|string $fee_value, int $fee_type ): string {
+	private function get_formatted_fee_for_display( int|float $fee_value, int $fee_type ): string {
 		$prefix        = $fee_value > 0 ? '+' : '';
 		$formatted_fee = '';
 		$suffix        = '';
@@ -478,7 +478,7 @@ class AttributeFees {
 		if ( FeeType::FLAT->value === $fee_type ) {
 			$formatted_fee = wc_price( $fee_value, array( 'in_span' => false ) );
 		} else {
-			$formatted_fee = wc_format_localized_decimal( floatval( $fee_value ) );
+			$formatted_fee = wc_format_localized_decimal( (string) $fee_value );
 			$suffix        = '%';
 		}
 
@@ -488,12 +488,12 @@ class AttributeFees {
 	/**
 	 * Fix inconsistent price display on the mini-cart.
 	 *
-	 * @param string     $price_html    Price HTML.
-	 * @param array      $cart_item     Cart item data.
-	 * @param int|string $cart_item_key Cart item key.
+	 * @param string               $price_html    Price HTML.
+	 * @param array<string, mixed> $cart_item     Cart item data.
+	 * @param string               $cart_item_key Cart item key.
 	 * @return string
 	 */
-	public function adjust_cart_item_price( string $price_html, array $cart_item, int|string $cart_item_key ): string {
+	public function adjust_cart_item_price( string $price_html, array $cart_item, string $cart_item_key ): string {
 		if ( empty( $cart_item['ssaffw_price_with_fees'] ) ) {
 			return $price_html;
 		}

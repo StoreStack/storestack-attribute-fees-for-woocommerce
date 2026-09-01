@@ -78,9 +78,8 @@ class Loader {
 		$includes_dir = SSAFFW_PLUGIN_PATH . 'includes/';
 
 		require_once $includes_dir . 'class-migrations.php';
-		new Migrations();
 
-		// Load enum before AttributeFees class.
+		// Load FeeType enum before the AttributeFees class.
 		require_once $includes_dir . 'enum-feetype.php';
 
 		require_once $includes_dir . 'class-attributefees.php';

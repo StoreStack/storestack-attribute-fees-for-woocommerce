@@ -51,13 +51,11 @@ class Migrations {
 		foreach ( $migrations as $version => $method ) {
 			// Only run migrations that are newer than the currently applied version.
 			if ( version_compare( $applied_migration, (string) $version, '<' ) ) {
-				if ( method_exists( self::class, $method ) ) {
-					// Execute the migration.
-					self::$method();
+				// Execute the migration.
+				self::$method();
 
-					// Update the option step-by-step in case a later migration fails.
-					update_option( 'ssaffw_attribute_fees_db_applied_migration', $version );
-				}
+				// Update the option step-by-step in case a later migration fails.
+				update_option( 'ssaffw_attribute_fees_db_applied_migration', $version );
 			}
 		}
 	}
