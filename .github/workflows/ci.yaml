@@ -28,7 +28,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${BASELINE_PHP_VERSION}
+          php-version: ${{ env.BASELINE_PHP_VERSION }}
           coverage: none
 
       - name: Run Syntax Check
@@ -45,7 +45,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${BASELINE_PHP_VERSION}
+          php-version: ${{ env.BASELINE_PHP_VERSION }}
           tools: composer, cs2pr # cs2pr converts PHPCS output to GitHub PR annotations
           coverage: none
 
