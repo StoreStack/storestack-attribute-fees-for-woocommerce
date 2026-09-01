@@ -1,5 +1,6 @@
 {
     "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0",
         "phpstan/phpstan": "^2.2",
         "phpstan/extension-installer": "^1.4",
         "szepeviktor/phpstan-wordpress": "^2.0",
@@ -7,10 +8,13 @@
     },
     "config": {
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpstan/extension-installer": true
         }
     },
     "scripts": {
+        "phpcs": "phpcs -p -s --standard=WordPress --colors --ignore=vendor/,node_modules/,tests/ --extensions=php ./",
+        "phpcbf": "phpcbf -p -s --standard=WordPress --colors --ignore=vendor/,node_modules/,tests/ --extensions=php ./",
         "phpstan": "phpstan analyse --memory-limit=2048M"
     }
 }

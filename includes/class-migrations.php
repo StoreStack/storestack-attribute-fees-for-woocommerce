@@ -1,56 +1,78 @@
 <?php
+/**
+ * Database migrations handler.
+ *
+ * @package StoreStackAttributeFeesForWooCommerce
+ */
 
 declare(strict_types=1);
 
 namespace StoreStackAttributeFeesForWooCommerce;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
+/**
+ * Class Migrations.
+ */
+class Migrations {
 
-class Migrations
-{
-    public static string $table_name = 'ssaffw_attribute_fees';
-    private static string $latest_migration = '1';
+	/**
+	 * Table name without prefix.
+	 *
+	 * @var string
+	 */
+	public static string $table_name = 'ssaffw_attribute_fees';
 
-    public static function migrate()
-    {
-        $applied_migration = get_option('ssaffw_attribute_fees_db_applied_migration', '0');
+	/**
+	 * Latest migration version.
+	 *
+	 * @var string
+	 */
+	private static string $latest_migration = '1';
 
-        // If the DB is already up to date, return.
-        if (version_compare($applied_migration, self::$latest_migration, '>=')) {
-            return;
-        }
+	/**
+	 * Run migrations.
+	 *
+	 * @return void
+	 */
+	public static function migrate() {
+		$applied_migration = get_option( 'ssaffw_attribute_fees_db_applied_migration', '0' );
 
-        // Define migrations in chronological order: 'version' => 'method_name'
-        $migrations = [
-            '1' => 'migrate_1',
-            // '2' => 'migrate_2',
-        ];
+		// If the DB is already up to date, return.
+		if ( version_compare( $applied_migration, self::$latest_migration, '>=' ) ) {
+			return;
+		}
 
-        foreach ($migrations as $version => $method) {
-            // Only run migrations that are newer than the currently applied version
-            if (version_compare($applied_migration, (string)$version, '<')) {
-                if (method_exists(self::class, $method)) {
-                    // Execute the migration
-                    self::$method();
+		// Define migrations in chronological order: 'version' => 'method_name'.
+		$migrations = array(
+			'1' => 'migrate_1',
+		);
 
-                    // Update the option step-by-step in case a later migration fails
-                    update_option('ssaffw_attribute_fees_db_applied_migration', $version);
-                }
-            }
-        }
-    }
+		foreach ( $migrations as $version => $method ) {
+			// Only run migrations that are newer than the currently applied version.
+			if ( version_compare( $applied_migration, (string) $version, '<' ) ) {
+				if ( method_exists( self::class, $method ) ) {
+					// Execute the migration.
+					self::$method();
 
-    /**
-     * Migration 1: Initial table creation and foreign keys.
-     */
-    private static function migrate_1()
-    {
-        global $wpdb;
+					// Update the option step-by-step in case a later migration fails.
+					update_option( 'ssaffw_attribute_fees_db_applied_migration', $version );
+				}
+			}
+		}
+	}
 
-        $table_name = $wpdb->prefix . self::$table_name;
+	/**
+	 * Migration 1: Initial table creation and foreign keys.
+	 *
+	 * @return void
+	 */
+	private static function migrate_1() {
+		global $wpdb;
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$table_name = $wpdb->prefix . self::$table_name;
+
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `product_id` BIGINT(20) UNSIGNED NOT NULL,
             `attribute_id` BIGINT(20) UNSIGNED NOT NULL,            
@@ -64,23 +86,6 @@ class Migrations
             FOREIGN KEY (`term_id`) REFERENCES {$wpdb->prefix}terms(`term_id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        $wpdb->query($sql);
-    }
-
-    /**
-     * Future Migration Example
-     * Safely add a new column in the future.
-     */
-    // private static function migrate_2()
-    // {
-    //     global $wpdb;
-    //     $table_name = $wpdb->prefix . self::$table_name;
-
-    //     // Include WordPress upgrade functions so we can use maybe_add_column()
-    //     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-    //     // maybe_add_column() safely checks if 'status' exists before trying to add it
-    //     $create_ddl = "ALTER TABLE {$table_name} ADD COLUMN `status` VARCHAR(20) NOT NULL DEFAULT 'active';";
-    //     maybe_add_column($table_name, 'status', $create_ddl);
-    // }
+		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
 }
