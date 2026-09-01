@@ -43,7 +43,7 @@ class AttributeFees {
 	 * @return void
 	 */
 	private function initialize_admin(): void {
-		add_action( 'woocommerce_update_product', array( $this, 'woocommerce_update_product' ), 10, 2 );
+		add_action( 'woocommerce_update_product', array( $this, 'woocommerce_update_product' ), 10, 1 );
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_attribute_fees_tab' ) );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'add_attribute_fees_tab_content' ) );
 	}
@@ -58,8 +58,8 @@ class AttributeFees {
 		add_action( 'woocommerce_before_variations_form', array( $this, 'add_fees_to_product_form' ) );
 		add_filter( 'woocommerce_get_item_data', array( $this, 'add_fees_to_cart_item' ), 10, 2 );
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ), 10, 1 );
-		add_filter( 'woocommerce_cart_item_price', array( $this, 'adjust_cart_item_price' ), 10, 3 );
-		add_filter( 'woocommerce_show_variation_price', array( $this, 'show_variation_price' ), 10, 3 );
+		add_filter( 'woocommerce_cart_item_price', array( $this, 'adjust_cart_item_price' ), 10, 2 );
+		add_filter( 'woocommerce_show_variation_price', array( $this, 'show_variation_price' ), 10, 2 );
 	}
 
 	/**
@@ -218,7 +218,7 @@ class AttributeFees {
 			$wpdb->prefix . Migrations::$table_name,
 			$product_id
 		);
-		$results = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$results = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		$fees = array();
 		foreach ( $results as $row ) {
@@ -239,11 +239,10 @@ class AttributeFees {
 	/**
 	 * Save product fees when product is updated.
 	 *
-	 * @param int|string  $product_id Product ID.
-	 * @param \WC_Product $product    Product instance.
+	 * @param int|string $product_id Product ID.
 	 * @return void
 	 */
-	public function woocommerce_update_product( int|string $product_id, \WC_Product $product ): void {
+	public function woocommerce_update_product( int|string $product_id ): void {
 		$attribute_fees = wc_clean( isset( $_POST['attribute_fees'] ) ? wp_unslash( $_POST['attribute_fees'] ) : array() ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
 
 		$this->save_fees( intval( $product_id ), (array) $attribute_fees );
@@ -261,7 +260,7 @@ class AttributeFees {
 
 		// Delete existing fees for the product.
 		// This is necessary to avoid duplicates and ensure data integrity.
-		$wpdb->delete( $wpdb->prefix . Migrations::$table_name, array( 'product_id' => $product_id ) );
+		$wpdb->delete( $wpdb->prefix . Migrations::$table_name, array( 'product_id' => $product_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		if ( empty( $attribute_fees ) ) {
 			// Clear cache if no fees are set and return.
@@ -297,10 +296,10 @@ class AttributeFees {
 			if ( ! empty( $insert_values ) ) {
 				// Perform bulk insert.
 				$query = $wpdb->prepare(
-					'INSERT INTO %i (product_id, attribute_id, term_id, fee_type, fee) VALUES ' . implode( ', ', $placeholders ), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+					'INSERT INTO %i (product_id, attribute_id, term_id, fee_type, fee) VALUES ' . implode( ', ', $placeholders ), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 					array_merge( array( $wpdb->prefix . Migrations::$table_name ), $insert_values )
 				);
-				$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery
 			}
 
 			// Add data to cache.
@@ -366,12 +365,11 @@ class AttributeFees {
 	/**
 	 * Force the display of variation price if the product has fees.
 	 *
-	 * @param bool                  $default_value Default value.
-	 * @param \WC_Product_Variable  $product Product instance.
-	 * @param \WC_Product_Variation $variation Variation instance.
+	 * @param bool                 $default_value Default value.
+	 * @param \WC_Product_Variable $product       Product instance.
 	 * @return bool
 	 */
-	public function show_variation_price( bool $default_value, \WC_Product_Variable $product, \WC_Product_Variation $variation ): bool {
+	public function show_variation_price( bool $default_value, \WC_Product_Variable $product ): bool {
 		$fees = $this->get_all_fees( $product->get_id() );
 
 		if ( empty( $fees ) ) {
@@ -488,12 +486,11 @@ class AttributeFees {
 	/**
 	 * Fix inconsistent price display on the mini-cart.
 	 *
-	 * @param string               $price_html    Price HTML.
-	 * @param array<string, mixed> $cart_item     Cart item data.
-	 * @param string               $cart_item_key Cart item key.
+	 * @param string               $price_html Price HTML.
+	 * @param array<string, mixed> $cart_item  Cart item data.
 	 * @return string
 	 */
-	public function adjust_cart_item_price( string $price_html, array $cart_item, string $cart_item_key ): string {
+	public function adjust_cart_item_price( string $price_html, array $cart_item ): string {
 		if ( empty( $cart_item['ssaffw_price_with_fees'] ) ) {
 			return $price_html;
 		}

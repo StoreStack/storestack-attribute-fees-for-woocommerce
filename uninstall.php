@@ -23,7 +23,7 @@ $query      = $wpdb->prepare(
 	'DROP TABLE IF EXISTS %i',
 	$table_name
 );
-$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 // 2. Clean up plugin options.
 delete_option( 'ssaffw_attribute_fees_remove_data' );
