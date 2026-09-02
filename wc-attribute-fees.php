@@ -51,7 +51,7 @@ class Loader {
 	 *
 	 * @return self
 	 */
-	public static function run() {
+	public static function run(): self {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -63,7 +63,7 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	private function define_constants() {
+	private function define_constants(): void {
 		define( 'SSAFFW_PLUGIN_VERSION', '1.0.2' );
 		define( 'SSAFFW_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'SSAFFW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -74,7 +74,7 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	private function load_classes() {
+	private function load_classes(): void {
 		$includes_dir = SSAFFW_PLUGIN_PATH . 'includes/';
 
 		require_once $includes_dir . 'class-migrations.php';
@@ -91,7 +91,7 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		$this->define_constants();
 		$this->load_classes();
 
@@ -107,7 +107,7 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	public function enqueue_admin_scripts() {
+	public function enqueue_admin_scripts(): void {
 		if ( ! wp_doing_ajax() ) {
 			wp_enqueue_style( 'storestack-attribute-fees-for-woocommerce-admin', SSAFFW_PLUGIN_URL . 'assets/css/admin.css', array(), SSAFFW_PLUGIN_VERSION );
 			wp_enqueue_script( 'storestack-attribute-fees-for-woocommerce-admin', SSAFFW_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), SSAFFW_PLUGIN_VERSION, true );
@@ -119,7 +119,7 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	public function enqueue_frontend_scripts() {
+	public function enqueue_frontend_scripts(): void {
 		wp_enqueue_script( 'storestack-attribute-fees-for-woocommerce', SSAFFW_PLUGIN_URL . 'assets/js/frontend.js', array( 'jquery', 'wc-accounting', 'wc-add-to-cart-variation' ), SSAFFW_PLUGIN_VERSION, true );
 
 		wp_localize_script(
@@ -140,7 +140,7 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	public function declare_wc_support() {
+	public function declare_wc_support(): void {
 		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 		}

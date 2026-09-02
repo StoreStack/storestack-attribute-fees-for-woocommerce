@@ -35,7 +35,7 @@ class Migrations {
 	 *
 	 * @return void
 	 */
-	public static function migrate() {
+	public static function migrate(): void {
 		$applied_migration = get_option( 'ssaffw_attribute_fees_db_applied_migration', '0' );
 
 		// If the DB is already up to date, return.
@@ -65,7 +65,7 @@ class Migrations {
 	 *
 	 * @return void
 	 */
-	private static function migrate_1() {
+	private static function migrate_1(): void {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . self::$table_name;
