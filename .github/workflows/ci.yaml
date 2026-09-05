@@ -1,82 +1,79 @@
 name: CI
 
 on:
-  push:
-    branches: main
-  pull_request:
-  workflow_dispatch: # Allow manually triggering the workflow
+    push:
+        branches: main
+    pull_request:
+    workflow_dispatch: # Allow manually triggering the workflow
 
 permissions:
-  contents: read
+    contents: read
 
 # A new push cancels an ongoing run
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  BASELINE_PHP_VERSION: "8.2"
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Linting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+    lint:
+        name: "Linting: PHP ${{ vars.BASELINE_PHP_VERSION }}"
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v7
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.BASELINE_PHP_VERSION }}
-          coverage: none
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ vars.BASELINE_PHP_VERSION }}
+                  coverage: none
 
-      - name: Run Syntax Check
-        # Scans all .php files (ignoring vendor/) and runs php -l on them
-        run: find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n1 php -l
+            - name: Run Syntax Check
+              # Scans all .php files (ignoring vendor/) and runs php -l on them
+              run: find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n1 php -l
 
-  style:
-    name: Coding Standards
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+    style:
+        name: WordPress Coding Standards
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v7
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.BASELINE_PHP_VERSION }}
-          tools: composer, cs2pr # cs2pr converts PHPCS output to GitHub PR annotations
-          coverage: none
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ vars.BASELINE_PHP_VERSION }}
+                  tools: composer, cs2pr # cs2pr converts PHPCS output to GitHub PR annotations
+                  coverage: none
 
-      - name: Install Dependencies
-        uses: ramsey/composer-install@v4
+            - name: Install Dependencies
+              uses: ramsey/composer-install@v4
 
-      - name: Run PHPCS
-        run: vendor/bin/phpcs -s --standard=WordPress --colors --ignore=vendor/,node_modules/,tests/ --extensions=php --report=checkstyle ./ | cs2pr
+            - name: Run PHPCS
+              run: vendor/bin/phpcs -s --standard=WordPress --colors --ignore=vendor/,node_modules/,tests/ --extensions=php --report=checkstyle ./ | cs2pr
 
-  analyze:
-    name: "PHPStan: PHP ${{ matrix.php }}"
-    runs-on: ubuntu-latest
+    analyze:
+        name: "PHPStan: PHP ${{ matrix.php }}"
+        runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ["8.2", "8.3", "8.4", "8.5"]
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ["8.2", "8.3", "8.4", "8.5"]
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v7
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          tools: composer
-          coverage: none
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  tools: composer
+                  coverage: none
 
-      - name: Install Dependencies
-        uses: ramsey/composer-install@v4
+            - name: Install Dependencies
+              uses: ramsey/composer-install@v4
 
-      - name: Run PHPStan Analysis
-        run: vendor/bin/phpstan analyse --memory-limit=2048M --error-format=github
+            - name: Run PHPStan Analysis
+              run: vendor/bin/phpstan analyse --memory-limit=2048M --error-format=github
