@@ -88,6 +88,9 @@ When deleting the plugin from WordPress Admin, it performs a clean uninstall, wh
 
 == Changelog ==
 
+= 1.1.0 - 2026/09/07 =
+* Update minimum requirements to PHP 8.2, WordPress 6.7, and WooCommerce 10.0.
+
 = 1.0.2 - 2026/08/16 =
 * Refactor attribute fee handling.
 * Improve code consistency for price calculation.
