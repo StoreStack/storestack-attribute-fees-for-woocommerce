@@ -4,10 +4,10 @@ Add fees to product attributes and change final product price based on user-sele
 
 **Contributors:** [tiagosartor3](https://profiles.wordpress.org/tiagosartor3), [storestack](https://profiles.wordpress.org/storestack)  
 **Tags:** `woocommerce`, `product attributes`, `extra fees`, `variable products`, `pricing`  
-**Requires at least:** 6.2  
+**Requires at least:** 6.7  
 **Tested up to:** 7.1  
 **Requires PHP:** 8.2  
-**Stable tag:** 1.0.2  
+**Stable tag:** 1.1.0  
 **License:** [GPLv3 or later](https://www.gnu.org/licenses/gpl-3.0.html)  
 
 ---

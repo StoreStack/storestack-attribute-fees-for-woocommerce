@@ -1,10 +1,10 @@
 === StoreStack Attribute Fees for WooCommerce ===
 Contributors: tiagosartor3, storestack
 Tags: woocommerce, product attributes, extra fees, variable products, pricing
-Requires at least: 6.2
+Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
