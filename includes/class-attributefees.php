@@ -228,7 +228,7 @@ class AttributeFees {
 				continue;
 			}
 
-			$fees[ $attribute_name ][ $term->slug ]['fee']      = $row->fee;
+			$fees[ $attribute_name ][ $term->slug ]['fee']      = floatval( $row->fee );
 			$fees[ $attribute_name ][ $term->slug ]['fee_type'] = intval( $row->fee_type );
 		}
 
