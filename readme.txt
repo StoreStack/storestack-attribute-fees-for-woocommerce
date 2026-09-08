@@ -4,7 +4,7 @@ Tags: woocommerce, product attributes, extra fees, variable products, pricing
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,6 +87,9 @@ When deleting the plugin from WordPress Admin, it performs a clean uninstall, wh
 3. Frontend demo with the Storefront theme.
 
 == Changelog ==
+
+= 1.1.1 - 2026/09/08 =
+* Fixed an issue where attribute fees were not being applied correctly to variable products.
 
 = 1.1.0 - 2026/09/07 =
 * Updated the minimum supported versions to PHP 8.2, WordPress 6.7, and WooCommerce 10.0.
