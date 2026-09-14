@@ -25,7 +25,7 @@ Whether you charge extra for custom materials, special colors, premium finishes,
 
 ### Integrations
 
-Works seamlessly with the following plugins:
+Works with the following plugins:
 
 * **[WooCommerce](https://wordpress.org/plugins/woocommerce)**
 * **[StoreStack Attribute Swatches for WooCommerce](https://wordpress.org/plugins/storestack-attribute-swatches-for-woocommerce)**
