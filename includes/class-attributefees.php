@@ -132,15 +132,28 @@ class AttributeFees {
 							<table class="ssaffw-fees-table <?php echo esc_attr( $attribute_name ); ?> widefat fixed striped">
 								<thead>
 									<tr>
-										<th><?php esc_html_e( 'Option Name', 'storestack-attribute-fees-for-woocommerce' ); ?></th>
-										<th><?php esc_html_e( 'Fee', 'storestack-attribute-fees-for-woocommerce' ); ?><?php echo wc_help_tip( esc_html__( 'Enter a fee for the option.', 'storestack-attribute-fees-for-woocommerce' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
-										<th><?php esc_html_e( 'Fee Type', 'storestack-attribute-fees-for-woocommerce' ); ?><?php echo wc_help_tip( esc_html__( 'Select the type of fee for the option.', 'storestack-attribute-fees-for-woocommerce' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
+										<th>
+											<?php esc_html_e( 'Option Name', 'storestack-attribute-fees-for-woocommerce' ); ?>
+										</th>
+										<th>
+											<?php esc_html_e( 'Fee', 'storestack-attribute-fees-for-woocommerce' ); ?>
+											<?php echo wc_help_tip( esc_html__( 'Enter a fee for the option.', 'storestack-attribute-fees-for-woocommerce' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										</th>
+										<th>
+											<?php esc_html_e( 'Fee Type', 'storestack-attribute-fees-for-woocommerce' ); ?>
+											<?php echo wc_help_tip( esc_html__( 'Select the type of fee for the option.', 'storestack-attribute-fees-for-woocommerce' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
-									<?php $terms = $attribute->get_terms(); ?>
-									<?php if ( $terms ) { ?>
-										<?php foreach ( $terms as $term ) { ?>
+									<?php
+									$terms = $attribute->get_terms();
+									if ( $terms ) {
+										foreach ( $terms as $term ) {
+											if ( ! $term || ! $term instanceof \WP_Term ) {
+												continue;
+											}
+											?>
 											<tr>
 												<td><?php echo esc_html( $term->name ); ?></td>
 												<td>
@@ -224,7 +237,7 @@ class AttributeFees {
 		foreach ( $results as $row ) {
 			$attribute_name = wc_attribute_taxonomy_name_by_id( intval( $row->attribute_id ) );
 			$term           = get_term( intval( $row->term_id ) );
-			if ( ! $term || is_wp_error( $term ) ) {
+			if ( ! $term || ! $term instanceof \WP_Term ) {
 				continue;
 			}
 
@@ -280,7 +293,7 @@ class AttributeFees {
 			$placeholders  = array();
 			foreach ( $filtered_options as $option_key => $option_values ) {
 				$term = get_term_by( 'slug', $option_key, $attribute_name );
-				if ( ! $term ) {
+				if ( ! $term || ! $term instanceof \WP_Term ) { // @phpstan-ignore instanceof.alwaysTrue (Intentional defensive check)
 					continue;
 				}
 
@@ -314,10 +327,10 @@ class AttributeFees {
 	 * Modifies the variation option name to include the formatted fee for display.
 	 * Hooked to 'woocommerce_variation_option_name' filter.
 	 *
-	 * @param string      $term_name      Term name.
-	 * @param mixed       $term           Term object.
-	 * @param string      $attribute_name Attribute taxonomy name.
-	 * @param \WC_Product $product        Product instance.
+	 * @param string         $term_name      Term name.
+	 * @param \WP_Term|mixed $term           Term object.
+	 * @param string         $attribute_name Attribute taxonomy name.
+	 * @param \WC_Product    $product        Product instance.
 	 * @return string
 	 */
 	public function variation_option_name( string $term_name, mixed $term, string $attribute_name, \WC_Product $product ): string {
@@ -392,13 +405,12 @@ class AttributeFees {
 		foreach ( $item_data as $key => $option ) {
 			$attribute_name = wc_attribute_taxonomy_name( $option['key'] );
 			$term           = get_term_by( 'name', $option['value'], $attribute_name );
-			if ( ! $term ) {
+
+			if ( ! $term || ! $term instanceof \WP_Term ) { // @phpstan-ignore instanceof.alwaysTrue (Intentional defensive check)
 				continue;
 			}
 
-			$term_name = $term->name;
-
-			$item_data[ $key ]['value'] = apply_filters( 'woocommerce_variation_option_name', $term_name, $term, $attribute_name, $product ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			$item_data[ $key ]['value'] = apply_filters( 'woocommerce_variation_option_name', $term->name, $term, $attribute_name, $product ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
 
 		return $item_data;
@@ -437,7 +449,11 @@ class AttributeFees {
 				$attribute_name = str_replace( 'attribute_', '', $attribute_name );
 				$term           = get_term_by( 'slug', $attribute_value, $attribute_name );
 
-				if ( ! $term || ! isset( $fees[ $attribute_name ][ $term->slug ] ) ) {
+				if ( ! $term || ! $term instanceof \WP_Term ) { // @phpstan-ignore instanceof.alwaysTrue (Intentional defensive check)
+					continue;
+				}
+
+				if ( ! isset( $fees[ $attribute_name ][ $term->slug ] ) ) {
 					continue;
 				}
 
