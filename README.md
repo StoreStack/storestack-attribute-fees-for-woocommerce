@@ -7,7 +7,7 @@ Add fees to product attributes and change final product price based on user-sele
 **Requires at least:** 6.7  
 **Tested up to:** 7.1  
 **Requires PHP:** 8.2  
-**Stable tag:** 1.1.1  
+**Stable tag:** 1.1.2  
 **License:** [GPLv3 or later](https://www.gnu.org/licenses/gpl-3.0.html)  
 
 ---
@@ -93,6 +93,9 @@ When deleting the plugin from WordPress Admin, it performs a clean uninstall, wh
 ---
 
 ## Changelog
+
+### 1.1.2 - 2026/11/02
+* Improved validation and type safety for product term handling.
 
 ### 1.1.1 - 2026/09/08
 * Fixed an issue where attribute fees were not being applied correctly to variable products.

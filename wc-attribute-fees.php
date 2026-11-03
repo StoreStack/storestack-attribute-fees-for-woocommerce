@@ -3,7 +3,7 @@
  * Plugin Name:          StoreStack Attribute Fees for WooCommerce
  * Plugin URI:           https://github.com/StoreStack/storestack-attribute-fees-for-woocommerce
  * Description:          Add fees to product attributes and change final product price based on user-selected attributes and options.
- * Version:              1.1.1
+ * Version:              1.1.2
  * Author:               StoreStack
  * Author URI:           https://github.com/StoreStack
  * License:              GPLv3 or later
@@ -13,7 +13,7 @@
  * Tested up to:         7.1
  * Requires Plugins:     woocommerce
  * WC requires at least: 10.0
- * WC tested up to:      11.1
+ * WC tested up to:      11.2
  * Requires PHP:         8.2
  *
  * @package StoreStackAttributeFeesForWooCommerce
@@ -65,7 +65,7 @@ class Loader {
 	 * @return void
 	 */
 	private function define_constants(): void {
-		define( 'SSAFFW_PLUGIN_VERSION', '1.1.1' );
+		define( 'SSAFFW_PLUGIN_VERSION', '1.1.2' );
 		define( 'SSAFFW_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'SSAFFW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 	}
